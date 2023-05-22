@@ -657,7 +657,11 @@ static int ch343_tty_open(struct tty_struct *tty, struct file *filp)
     return tty_port_open(&ch343->port, tty, filp);
 }
 
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 3, 0))
+static void ch343_port_dtr_rts(struct tty_port *port, bool raise)
+#else
 static void ch343_port_dtr_rts(struct tty_port *port, int raise)
+#endif
 {
     struct ch343 *ch343 = container_of(port, struct ch343, port);
     int res;
