@@ -812,7 +812,11 @@ static int ch343_tty_write(struct tty_struct *tty, const unsigned char *buf, int
     if (!count)
         return 0;
 
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 6, 0))
+    dev_vdbg(&ch343->data->dev, "%s - count %ld\n", __func__, count);
+#else
     dev_vdbg(&ch343->data->dev, "%s - count %d\n", __func__, count);
+#endif
 
     spin_lock_irqsave(&ch343->write_lock, flags);
     wbn = ch343_wb_alloc(ch343);
